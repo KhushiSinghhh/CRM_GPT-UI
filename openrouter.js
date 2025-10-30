@@ -1,11 +1,13 @@
+
 // openrouter.js
 import fetch from "node-fetch"; // npm install node-fetch
 
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 export async function getCompletion(promptText) {
   const url = "https://openrouter.ai/api/v1/chat/completions";
 
   const headers = {
-    "Authorization": "Bearer OPENROUTER_API_KEY",
+    "Authorization": "Bearer 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",
     "Content-Type": "application/json",
   };
 
