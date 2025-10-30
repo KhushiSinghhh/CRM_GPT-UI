@@ -5,7 +5,7 @@ export async function getCompletion(promptText) {
   const url = "https://openrouter.ai/api/v1/chat/completions";
 
   const headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer OPENROUTER_API_KEY",
     "Content-Type": "application/json",
   };
 
