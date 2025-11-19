@@ -1,0 +1,136 @@
+# CRM Documentation Knowledge Base
+
+## 1. Salesforce CRM
+**Overview:** Salesforce is a leading enterprise CRM offering cloud-based tools for sales, service, marketing, and analytics.
+**Key Features:**
+- Sales Cloud, Service Cloud, Marketing Cloud
+- Einstein AI for predictive insights
+- AppExchange integrations
+**API Info:**
+- REST API: https://developer.salesforce.com/docs/
+- Authentication: OAuth 2.0
+**Best For:** Enterprises needing customization and scalability.
+**Pricing:** Starts $25/user/month
+---
+
+## 2. HubSpot CRM
+**Overview:** HubSpot provides an all-in-one CRM with marketing, sales, and service tools.
+**Key Features:**
+- Free CRM core
+- Automation workflows
+- Integrates with Gmail, Outlook, Zapier
+**API Info:**
+- REST API: https://developers.hubspot.com/docs/api/overview
+- Authentication: OAuth 2.0 or API Key
+**Best For:** SMBs and startups looking for ease of use.
+**Pricing:** Free tier; paid from $45/month
+---
+
+## 3. Zoho CRM
+**Overview:** Affordable CRM for startups and SMBs.
+**Key Features:**
+- AI assistant “Zia”
+- Workflow automation and reports
+- Omnichannel communication
+**API Info:**
+- REST API: https://www.zoho.com/crm/developer/docs/api/
+- Authentication: OAuth 2.0
+**Best For:** SMBs and startups
+**Pricing:** $14/user/month
+---
+
+## 4. Microsoft Dynamics 365
+**Overview:** Enterprise CRM + ERP suite.
+**Key Features:**
+- Integration with Microsoft 365 and Power BI
+- AI forecasting and analytics
+**API Info:**
+- Web API: https://learn.microsoft.com/en-us/power-apps/developer/data-platform/webapi/
+- Auth: Azure AD OAuth 2.0
+**Best For:** Large companies already using Microsoft stack
+**Pricing:** Starts at $65/user/month
+---
+
+## 5. Pipedrive CRM
+**Overview:** Pipeline-focused CRM for sales teams.
+**Key Features:**
+- Visual drag-drop pipelines
+- Reporting and goal tracking
+**API Info:**
+- REST API: https://developers.pipedrive.com/docs/api/v1/
+- Auth: API Token
+**Best For:** Sales-driven SMBs
+**Pricing:** $14/user/month
+---
+
+## 6. Freshsales (Freshworks)
+**Overview:** CRM built for service-based and SaaS businesses.
+**Key Features:**
+- Built-in phone and email
+- AI-based deal insights (Freddy AI)
+**API Info:**
+- REST API: https://developers.freshworks.com/crm/api/
+- Auth: API Key or OAuth
+**Best For:** Service and SaaS companies
+**Pricing:** Free tier; paid from $15/user/month
+---
+
+## 7. Agile CRM
+**Overview:** Compact CRM offering marketing, service, and sales automation.
+**Key Features:**
+- Email campaigns and helpdesk tools
+- Appointment scheduling
+**API Info:**
+- REST API: https://www.agilecrm.com/api
+- Auth: API Key
+**Best For:** Small teams and agencies
+**Pricing:** Free for 10 users; paid from $8.99/user/month
+---
+
+## 🔄 CRM Comparisons
+
+### Salesforce vs HubSpot
+- **Ease of Use:** HubSpot easier; Salesforce steeper learning curve.
+- **Customization:** Salesforce far more customizable.
+- **Pricing:** HubSpot cheaper for startups; Salesforce better for scaling.
+- **Integrations:** Both strong, Salesforce wider enterprise reach.
+
+### Zoho vs HubSpot
+- **Pricing:** Zoho cheaper overall.
+- **Features:** HubSpot has stronger marketing suite; Zoho more automation flexibility.
+- **Ease of Use:** HubSpot simpler UI.
+
+### Pipedrive vs Freshsales
+- **Focus:** Pipedrive = sales pipeline; Freshsales = service automation.
+- **AI:** Freshsales includes AI scoring; Pipedrive limited.
+- **Integrations:** Both support popular email and calendar tools.
+
+# CRM Documentation
+
+## HubSpot CRM
+HubSpot CRM offers free tools for small businesses. Paid plans include:
+- Starter: $20/month
+- Professional: $890/month
+- Enterprise: $3600/month
+API Docs: https://developers.hubspot.com/docs/api/overview
+
+## Salesforce CRM
+Salesforce CRM focuses on enterprise clients with deep customization.
+- Essentials: $25/user/month
+- Professional: $80/user/month
+- Enterprise: $165/user/month
+API Docs: https://developer.salesforce.com/docs/
+
+## Zoho CRM
+Zoho CRM is popular among startups for its affordability.
+- Standard: $14/user/month
+- Professional: $23/user/month
+- Enterprise: $40/user/month
+API Docs: https://www.zoho.com/crm/developer/docs/
+
+## Freshsales CRM
+Freshsales CRM by Freshworks offers AI-based deal insights.
+- Growth: $15/user/month
+- Pro: $39/user/month
+- Enterprise: $69/user/month
+API Docs: https://www.freshworks.com/crm/api/

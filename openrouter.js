@@ -1,62 +1,107 @@
 
 // openrouter.js
 import fetch from "node-fetch"; // npm install node-fetch
+import { retrieveContext } from "./rag.js";
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+// Keep a small chat history (for better conversational flow)
+let chatHistory = [];
+
 export async function getCompletion(promptText) {
   const url = "https://openrouter.ai/api/v1/chat/completions";
 
   const headers = {
-    "Authorization": "Bearer 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",
+    "Authorization": "Bearer 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",
     "Content-Type": "application/json",
   };
 
-  // 🧠 Adjusted system prompt
+  // Retrieve relevant CRM context
+  const retrievedContext = await retrieveContext(promptText);
+
   const systemPrompt = `
-You are a CRM (Customer Relationship Management) assistant.
+You are CRM-GPT, a friendly and knowledgeable CRM assistant that provides accurate, business-focused, and human-like answers.
 
-Your role is to answer any question that is clearly or even partly related to CRM —
-for example:
-- What is CRM?
-- How does Salesforce work?
-- What are CRM benefits?
-- How to automate CRM tasks?
-- What is lead management in CRM?
+Goals:
+Use simple markdown for clarity: bold for headings or key terms (like Zoho CRM, Pricing, Key Features).
+- Use simple markdown formatting for clarity:
+   - Use **bold** for headings and key terms.
+   - Use bullet points or short paragraphs for structure.
+   - Avoid excessive stars or symbols.
 
-If the user asks something unrelated to CRM, you must reply with:
-"I can't understand this! Ask me a CRM Query."
+- Avoid excessive formatting.
+Make the headings in bold letters.
+- Be friendly and clear — sound like a helpful business consultant, not a robot.
+- No markdown formatting (**text**, *stars*, etc.)
+- Give short, relevant explanations.
+- After every main answer, ask a helpful follow-up such as:
+  "Would you like me to explain this further?" or
+  "Do you want me to tell you about pricing, setup, or business fit?"
+“Use short bold section titles (like Key Features, Pricing, Best Use Cases) when appropriate.”
 
-If the user’s message *is even slightly related* to CRM, give a clear, correct answer.
-Do NOT block valid CRM questions.
-`;
+  - Adapt tone: 
+   - For small businesses → focus on ease, pricing, and simplicity.
+   - For enterprises → focus on scalability, integrations, and ROI.
+- Always use retrieved CRM context for facts.
+- If you don’t have reliable info, say:
+  "I don’t have enough accurate data to answer that."
+
+You are CRM-GPT, a friendly conversational CRM assistant.
+
+Your response rules:
+- Always use Markdown formatting.
+- Every heading must be bold and clear.
+- Highlight important keywords in bold.
+- If the user asks for comparison → reply using tables.
+- If the user asks for steps → reply using **numbered or bullet lists.
+- If explanation is long, break it using clear sections.
+- If user asks about CRM modules → format in columns or clear blocks.
+- If something is technical → explain in simple language first, then detailed.
+- After giving an answer, always ask:
+  “Would you like a more detailed explanation or is this enough?”
+- Always keep the tone friendly, like ChatGPT.
+
+  `;
+
+  // Add current user input to chat history
+  chatHistory.push({ role: "user", content: promptText });
 
   const body = JSON.stringify({
     model: "openai/gpt-4o-mini",
-    messages: [
-      { role: "system", content: systemPrompt },
-      { role: "user", content: promptText },
-    ],
-    max_tokens: 250,
-    temperature: 0.3,
+ messages: [
+    {
+      role: "system",
+      content: "You are a helpful CRM assistant who always checks if the user is satisfied with the answer or wants to know more. Provide friendly, structured answers with bold section titles when relevant.",
+    },
+    {
+      role: "system",
+      content: systemPrompt, // keep your detailed CRM behavior
+    },
+    {
+      role: "user",
+      content: promptText,
+    },
+  ],
+  max_tokens: 250,
+  temperature: 0.4,
   });
 
   try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers,
-      body,
-    });
-
+    const response = await fetch(url, { method: "POST", headers, body });
     const data = await response.json();
 
     if (data.choices && data.choices.length > 0) {
-      return data.choices[0].message.content.trim();
+      const reply = data.choices[0].message.content.replace(/\*\*/g, "").trim();
+      if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+      // Add assistant’s reply to the chat memory
+      chatHistory.push({ role: "assistant", content: reply });
+
+      return reply;
     } else {
-      console.error("⚠️ No valid response from OpenRouter:", data);
-      return "⚠️ No valid response from OpenRouter.";
+      console.error("No valid response from OpenRouter:", data);
+      return "No valid response from OpenRouter.";
     }
   } catch (error) {
-    console.error("❌ Error calling OpenRouter API:", error);
+    console.error("Error calling OpenRouter API:", error);
     throw error;
   }
 }
+
