@@ -10,7 +10,8 @@ import { getCompletion } from "./openrouter.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
-
+import dotenv from "dotenv";
+dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(express.static("public"));
