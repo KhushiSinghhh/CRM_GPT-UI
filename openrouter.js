@@ -9,10 +9,10 @@ let chatHistory = [];
 export async function getCompletion(promptText) {
   const url = "https://openrouter.ai/api/v1/chat/completions";
 
-  const headers = {
-    "Authorization": "Bearer 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",
-    "Content-Type": "application/json",
-  };
+ const headers = {
+  "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+  "Content-Type": "application/json",
+};
 
   // Retrieve relevant CRM context
   const retrievedContext = await retrieveContext(promptText);
