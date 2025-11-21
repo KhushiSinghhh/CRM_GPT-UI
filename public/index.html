@@ -1,299 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>OpenRouter Chatbot</title>
-  <script src="/js/marked.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRM GPT</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<!-- FIXED MARKED.JS -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-
-
-
-  <style>
-    body {
-    font-family: "Poppins", sans-serif;
-    background-color: #f3f3f3;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* ---------- FIRST UI ---------- */
-  #first-ui {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    transition: opacity 0.4s ease;
-  }
-
-  #first-ui.hidden {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .chat-card {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
-    width: 480px;
-    height: 600px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1 {
-    text-align: center;
-    font-size: 26px;
-    margin-bottom: 10px;
-  }
-
-  .chat-box {
-    flex: 1;
-    min-height: 300px;
-    max-height: 100%;
-    overflow-y: auto;
-    margin-bottom: 15px;
-    font-size: 17px;
-    line-height: 1.6;
-    padding-right: 5px;
-  }
-
-  .message {
-    display: inline-block;
-    padding: 12px 16px;
-    border-radius: 18px;
-    margin: 8px 0;
-    max-width: 80%;
-    word-wrap: break-word;
-    font-size: large;
-  }
-.message b {
-  font-weight: 600;
-  color: #222;
-  display: block;
-  margin-top: 6px;
+<style>
+/* ---------------- GLOBAL ---------------- */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: radial-gradient(circle at top, #0b132b, #000);
+  color: #fff;
 }
 
-.message h2 {
-  font-size: 20px;
+/* ---------------- FIRST UI ---------------- */
+#first-ui {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.5s ease;
+}
+
+#first-ui.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.welcome-card {
+  width: 450px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 35px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.logo-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  background: #00e6af;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-weight: 700;
-  margin: 6px 0;
+  font-size: 20px;
+  margin-bottom: 15px;
 }
 
-.message h3 {
-  font-size: 18px;
+.welcome-title {
+  font-size: 24px;
   font-weight: 600;
-  margin: 4px 0;
-}
-.message p {
-    margin: 10px 0;
+  margin-bottom: 5px;
 }
 
-
-  .bot {
-    background-color: #e6e6e6;
-    float: left;
-    clear: both;
-    color: #222;
-    font-weight: 500;
-  }
-
-  .user {
-    background-color: #007bff;
-    color: white;
-    float: right;
-    clear: both;
-    font-weight: 500;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-  }
-
-  input[type="text"] {
-    flex: 1;
-    padding: 12px 18px;
-    border-radius: 25px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    font-family: "Poppins", sans-serif;
-    outline: none;
-  }
-
-  button {
-    background-color: #00c896;
-    border: none;
-    color: white;
-    padding: 12px 15px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 20px;
-    transition: 0.2s ease;
-  }
-  button:hover {
-  background-color: #00b080;
+.welcome-desc {
+  opacity: 0.7;
+  margin-bottom: 20px;
 }
 
-/* Optional Scrollbar Styling */
-.chat-box::-webkit-scrollbar {
-  width: 6px;
+#chat-box {
+  background: rgba(255, 255, 255, 0.04);
+  height: 220px;
+  padding: 15px;
+  border-radius: 15px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 
-.chat-box::-webkit-scrollbar-thumb {
-  background-color: #ccc;
-  border-radius: 4px;
+.message {
+  display: block;          /* FIX: force each bubble on its own line */
+  width: fit-content;      /* keeps bubble size natural */
+  padding: 12px 18px;
+  border-radius: 14px;
+  margin: 10px 0;          /* better spacing */
+  max-width: 80%;
 }
 
-  /* ---------- SECOND UI ---------- */
-  #second-ui {
-    display: none;
-    height: 100vh;
-    background-color: #fff;
-  }
-
-  .container {
-    display: flex;
-    height: 100%;
-  }
-
-  .sidebar {
-    width: 220px;
-    background-color: #f9f9f9;
-    border-right: 1px solid #ddd;
-    padding: 20px;
-  }
-
-  .sidebar h2 {
-    font-size: 20px;
-    margin-top: 0;
-  }
-
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-
-  .sidebar li {
-  margin: 10px 0;
-  cursor: pointer;
-  color: #333;
-  transition: color 0.2s;
-}
-
-.sidebar li:hover {
-  color: #00c896; 
-}
-  .chat-area {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: 20px 30px;
-    background-color: #fff;
-  }
-
-  .chat-box2 {
-    flex: 1;
-    overflow-y: auto;
-    padding-bottom: 10px;
-  }
-
-  .chat-box2 .message {
-    margin: 6px 0;
-    display: inline-block;
-    padding: 12px 16px;
-    border-radius: 15px;
-    max-width: 75%;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    line-height: 1.5;
-    font-size: 15px;
-  }
-
-  .chat-box2 .bot {
-    background-color: #e6e6e6;
-    color: black;
-    float: left;
-    clear: both;
-  }
-
-  .chat-box2 .user {
-    background-color: #007bff;
-    color: white;
-    float: right;
-    clear: both;
-  }
-
-  .input-row2 {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-  }
-
-  #promptInput2 {
-    flex: 1;
-    padding: 12px 14px;
-    border-radius: 20px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-  }
-
-  #sendBtn2 {
-    background-color: #00c896;
-    border: none;
-    color: white;
-    padding: 10px 14px;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-  #sendBtn2:hover {
-  background-color: #00b082;
-}
-.chat-box h1,
-.chat-box h2,
-.chat-box h3,
-.chat-box h4,
-.chat-box h5,
-.chat-box h6 {
-  font-weight: 700 !important;
-  color: #111;
-}
-/* FIX MARKDOWN HEADINGS INSIDE CHAT */
+/* Reduce spacing between headings and paragraphs */
 .message h1,
 .message h2,
 .message h3,
-.message h4,
-.message h5,
-.message h6 {
-    font-weight: 800 !important;
-    display: block !important;
-    color: #111 !important;
-    margin: 10px 0 !important;
-}
-
 .message p {
-    margin: 10px 0;
+  margin-top: 6px !important;
+  margin-bottom: 8px !important;
+  line-height: 1.4 !important;
+}
+
+/* Optional: tighten list spacing */
+.message ul {
+  margin-top: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+.message ul li {
+  margin-bottom: 4px !important;
+}
+
+.message {
+  max-width: 85%;
+}
+
+.message.user {
+    margin-left: auto;     /* right align user messages */
 }
 
 
+.bot {
+  background: #111826;
+}
+.chat-box2 .message.bot,
+.chat-box .message.bot {
+  background: #0f172a;
+  color: #e8e8e8;
+  border-radius: 18px;
+  padding: 14px 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
-  </style>
+.chat-box2 .message.user,
+.chat-box .message.user {
+  background: #14b8a6;
+  color: #fff;
+  font-weight: 600;
+  padding: 14px 18px;
+  border-radius: 18px;
+}
+
+
+.user {
+  background: #00e6af;
+  color: black;
+  margin-left: auto;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+#promptInput {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  background: #fff;
+}
+
+#sendBtn {
+  background: #00e6af;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+/* ---------------- SECOND UI ---------------- */
+#second-ui {
+  display: none;
+  height: 100vh;
+}
+
+.layout {
+  display: flex;
+  height: 100%;
+}
+
+/* sidebar */
+.sidebar {
+  width: 260px;
+  background: #0d1b2a;
+  padding: 25px;
+  border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar h2 {
+  margin: 0 0 20px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sidebar ul {
+  padding: 0;
+  list-style: none;
+}
+
+.sidebar li {
+  padding: 10px 0;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.sidebar li:hover {
+  opacity: 1;
+  color: #00e6af;
+}
+
+/* chat panel */
+.chat-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 25px 40px;
+}
+
+#chat-box2 {
+  flex: 1;
+  padding-right: 10px;
+  overflow-y: auto;
+}
+
+.input-row2 {
+  display: flex;
+  gap: 10px;
+}
+
+#promptInput2 {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 20px;
+  border: none;
+}
+
+#sendBtn2 {
+  background: #00e6af;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.markdown-body table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+.markdown-body th {
+  background: #f1f1f1;
+  font-weight: 600;
+}
+
+</style>
 </head>
+
 <body>
-  <div id="first-ui">
-  <div class="chat-card">
-    <h1>💬 CRM GPT</h1>
-    <div id="chat-box" class="chat-box">
+
+<!-- FIRST UI -->
+<div id="first-ui">
+  <div class="welcome-card">
+    <div class="logo-box">CG</div>
+    <div class="welcome-title">CRM GPT</div>
+    <div class="welcome-desc">
+      Ask questions about CRMs, pricing, features or tasks.
+    </div>
+    
+    <div id="chat-box">
       <div class="message bot">Hi there! How can I assist you today?</div>
     </div>
+
     <div class="input-row">
       <input type="text" id="promptInput" placeholder="Type your message...">
       <button id="sendBtn">➤</button>
@@ -301,32 +282,34 @@
   </div>
 </div>
 
-<!-- ---------- SECOND UI ---------- -->
+<!-- SECOND UI -->
 <div id="second-ui">
-  <div class="container">
+  <div class="layout">
+    
     <div class="sidebar">
-      <h2>Options</h2>
+      <h2>CRM GPT</h2>
       <ul>
         <li>Home</li>
         <li>History</li>
         <li>Settings</li>
       </ul>
     </div>
-    <div class="chat-area">
-      <div id="chat-box2" class="chat-box2">
-        <div class="message bot">What is your CRM Query?</div>
+
+    <div class="chat-panel">
+      <div id="chat-box2">
+        <div class="message bot">What is your CRM query?</div>
       </div>
+
       <div class="input-row2">
         <input type="text" id="promptInput2" placeholder="Type your message...">
-        <input type="file" id="imageUpload" accept="image/*" />
         <button id="sendBtn2">➤</button>
       </div>
     </div>
+
   </div>
 </div>
+<script src="js/marked.min.js"></script>
 
-<script src="/js/marked.min.js"></script>
 <script src="script.js"></script>
-
 </body>
 </html>

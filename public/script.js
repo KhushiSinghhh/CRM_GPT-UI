@@ -7,18 +7,19 @@ const chatBox2 = document.getElementById("chat-box2");
 const input2 = document.getElementById("promptInput2");
 const sendBtn2 = document.getElementById("sendBtn2");
 
-function formatResponse(text) {
+let firstMessageSent = false;
 
-  // Convert markdown headings
+/* -----------------------------------------
+        FORMAT RESPONSE (BOT ONLY)
+------------------------------------------*/
+function formatResponse(text) {
   text = text.replace(/^### (.*)$/gm, "<h3>$1</h3>");
   text = text.replace(/^## (.*)$/gm, "<h2>$1</h2>");
   text = text.replace(/^# (.*)$/gm, "<h1>$1</h1>");
 
-  // AUTO-DETECT headings even if no # used (important!)
   text = text.replace(/^(.*CRM.*)$/gm, "<h2>$1</h2>");
   text = text.replace(/^[A-Z][A-Za-z0-9 ,'-]{5,}$/gm, "<h2>$1</h2>");
 
-  // Highlight keywords
   const keywords = [
     "CRM", "lead", "sales", "pipeline", "workflow",
     "automation", "integration", "API", "features", "pricing"
@@ -26,33 +27,37 @@ function formatResponse(text) {
 
   keywords.forEach(word => {
     const regex = new RegExp(`\\b${word}\\b`, "gi");
-    text = text.replace(regex,
-      `<strong style="font-weight:700;color:#000;">${word}</strong>`
+    text = text.replace(
+      regex,
+      `<strong style="font-weight:700;color:#fff;">${word}</strong>`
     );
   });
 
   return text;
 }
 
-
-/* ----------------------------
-      ADD MESSAGE
------------------------------*/
+/* -----------------------------------------
+           ADD MESSAGE TO CHATBOX
+------------------------------------------*/
 function addMessage(box, content, sender) {
   const msg = document.createElement("div");
-  msg.classList.add("message", sender);
 
-  // FIX: apply formatter BEFORE markdown parsing
-  const formatted = marked.parse(formatResponse(content));
+  // ADD MARKDOWN STYLING CLASS HERE
+  msg.classList.add("message", sender, "markdown-body");
 
-  msg.innerHTML = formatted;
+  if (sender === "bot") {
+    msg.innerHTML = marked.parse(formatResponse(content));
+  } else {
+    msg.textContent = content;
+  }
+
   box.appendChild(msg);
   box.scrollTop = box.scrollHeight;
 }
 
-/* ----------------------------
-      FIRST UI CHAT
------------------------------*/
+/* -----------------------------------------
+             FIRST UI CHAT SEND
+------------------------------------------*/
 sendBtn.addEventListener("click", async () => {
   const prompt = input.value.trim();
   if (!prompt) return;
@@ -61,6 +66,11 @@ sendBtn.addEventListener("click", async () => {
   input.value = "";
 
   addMessage(chatBox, "⏳ Thinking...", "bot");
+
+  if (!firstMessageSent) {
+    firstMessageSent = true;
+    chatBox2.innerHTML = chatBox.innerHTML;
+  }
 
   try {
     const res = await fetch("/generate", {
@@ -74,14 +84,17 @@ sendBtn.addEventListener("click", async () => {
     chatBox.lastChild.remove();
     addMessage(chatBox, data.response || "⚠️ No response.", "bot");
 
-    // UI transition
-    setTimeout(() => {
-      firstUI.classList.add("hidden");
+    chatBox2.innerHTML = chatBox.innerHTML;
+
+    if (firstMessageSent) {
       setTimeout(() => {
-        firstUI.style.display = "none";
-        secondUI.style.display = "block";
-      }, 400);
-    }, 700);
+        firstUI.classList.add("hidden");
+        setTimeout(() => {
+          firstUI.style.display = "none";
+          secondUI.style.display = "block";
+        }, 400);
+      }, 300);
+    }
 
   } catch {
     chatBox.lastChild.remove();
@@ -93,9 +106,9 @@ input.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendBtn.click();
 });
 
-/* ----------------------------
-      SECOND UI CHAT
------------------------------*/
+/* -----------------------------------------
+             SECOND UI CHAT SEND
+------------------------------------------*/
 sendBtn2.addEventListener("click", async () => {
   const prompt = input2.value.trim();
   if (!prompt) return;
