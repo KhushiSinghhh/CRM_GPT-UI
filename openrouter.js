@@ -9,7 +9,7 @@ let chatHistory = [];
 export async function getCompletion(promptText) {
   const url = "https://openrouter.ai/api/v1/chat/completions";
 
- const headers = {
+const headers = {
   "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
   "Content-Type": "application/json",
 };

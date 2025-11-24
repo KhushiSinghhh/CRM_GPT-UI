@@ -139,3 +139,91 @@ sendBtn2.addEventListener("click", async () => {
 input2.addEventListener("keypress", (e) => {
   if (e.key === "Enter") sendBtn2.click();
 });
+
+/* ---------------------------------------------------
+       SIDEBAR ACTIVE HIGHLIGHT HANDLER
+----------------------------------------------------*/
+const menuItems = document.querySelectorAll(".menu-item");
+
+function setActiveMenu(id) {
+  menuItems.forEach(item => item.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+
+/* -----------------------------------------
+           GO BACK TO FIRST UI (RESET)
+------------------------------------------*/
+document.getElementById("homeBtn").addEventListener("click", () => {
+
+  // Reset both chat boxes
+  chatBox.innerHTML = `<div class="message bot markdown-body">Hi there! How can I assist you today?</div>`;
+  chatBox2.innerHTML = `<div class="message bot markdown-body">What is your CRM query?</div>`;
+
+  // Reset the first-message flag
+  firstMessageSent = false;
+
+  // Switch UI
+  secondUI.style.display = "none";
+  firstUI.style.display = "flex";
+
+  // Remove transparency fade
+  firstUI.classList.remove("hidden");
+
+  // Scroll to top (fresh start)
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+/* ---------------------------------------------------
+        QUICK QUESTIONS CLICK HANDLER
+----------------------------------------------------*/
+document.querySelectorAll(".quick-question").forEach(item => {
+  item.addEventListener("click", () => {
+
+    const q = item.innerText.trim();
+
+    // Add question bubble to chat
+    addMessage(chatBox2, q, "user");
+
+    // Send directly to backend
+    fetch("/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: q }),
+    })
+    .then(res => res.json())
+    .then(data => {
+      addMessage(chatBox2, data.response || "⚠️ No response.", "bot");
+    })
+    .catch(() => {
+      addMessage(chatBox2, "❌ Error connecting to server.", "bot");
+    });
+
+  });
+});
+
+
+document.querySelectorAll(".quick-question").forEach(q => {
+  q.addEventListener("click", () => {
+
+    const text = q.innerText.trim();
+
+    // Add question bubble in UI
+    addMessage(chatBox2, text, "user");
+
+    // Send to backend
+    fetch("/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: text })
+    })
+    .then(res => res.json())
+    .then(data => {
+      addMessage(chatBox2, data.response || "⚠️ No response", "bot");
+    })
+    .catch(() => {
+      addMessage(chatBox2, "❌ Error connecting to server.", "bot");
+    });
+
+  });
+});

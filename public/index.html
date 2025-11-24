@@ -17,6 +17,8 @@ body {
   font-family: "Poppins", sans-serif;
   background: radial-gradient(circle at top, #0b132b, #000);
   color: #fff;
+  font-size: 16px !important;
+
 }
 
 /* ---------------- FIRST UI ---------------- */
@@ -56,7 +58,7 @@ body {
 }
 
 .welcome-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
   margin-bottom: 5px;
 }
@@ -168,7 +170,10 @@ body {
 #second-ui {
   display: none;
   height: 100vh;
+  font-size: 12px;
+  overflow-y: hidden;
 }
+
 
 .layout {
   display: flex;
@@ -185,7 +190,7 @@ body {
 
 .sidebar h2 {
   margin: 0 0 20px 0;
-  font-size: 22px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -220,6 +225,20 @@ body {
   overflow-y: auto;
 }
 
+.chat-panel {
+  font-size: 12px !important;   /* bigger normal text */
+}
+
+#chat-box2 .message {
+  font-size: 12px !important;
+}
+
+#chat-box2 .message {
+    font-size: 12px !important;
+}
+
+
+
 .input-row2 {
   display: flex;
   gap: 10px;
@@ -230,6 +249,7 @@ body {
   padding: 12px 18px;
   border-radius: 20px;
   border: none;
+  font-size: 12px !important;
 }
 
 #sendBtn2 {
@@ -237,7 +257,7 @@ body {
   border: none;
   padding: 10px 14px;
   border-radius: 50%;
-  font-size: 20px;
+  font-size: 12px;
   cursor: pointer;
 }
 
@@ -254,8 +274,104 @@ body {
 
 .markdown-body th {
   background: #f1f1f1;
-  font-weight: 600;
+  font-weight: 200;
 }
+
+.markdown-body table,
+.markdown-body th,
+.markdown-body td {
+  font-size: 12px !important;
+}
+
+/* ACTIVE MENU HIGHLIGHT */
+.menu-item {
+  padding: 10px 0;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.25s;
+}
+
+.menu-item:hover {
+  opacity: 1;
+  color: #00e6af;
+}
+
+.menu-item.active {
+  opacity: 1;
+  font-weight: 600;
+  color: #00e6af;
+}
+
+/* UI fade-in animation */
+.fade-in {
+  animation: fadeInScale 0.45s ease forwards;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ============= SIDEBAR FIX FOR PERFECT UI ============= */
+
+.sidebar {
+    width: 340px;                 /* Bigger width like screenshot */
+    background: #2a2f4a;          /* Dark bluish background */
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 3px solid #4b4fc1;
+}
+
+.sidebar h2 {
+    color: white;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+/* Grey panel behind bubbles */
+.question-container {
+    background: #bfbfbf;
+    padding: 25px 20px;
+    border-radius: 10px;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 30px;
+}
+
+/* Question bubbles */
+.q-bubble {
+    max-width: 75%;
+    padding: 12px 18px;
+    background: #22cbb6;
+    border-radius: 25px;
+    color: white;
+    font-size: 14px;
+    line-height: 1.4;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+    transition: 0.2s;
+}
+
+.q-bubble:hover {
+    transform: scale(1.05);
+    background: #1db5a2;
+}
+
+/* Alternating left and right */
+.q-left { margin-right: auto; }
+.q-right { margin-left: auto; }
+
 
 </style>
 </head>
@@ -289,7 +405,40 @@ body {
     <div class="sidebar">
       <h2>CRM GPT</h2>
       <ul>
-        <li>Home</li>
+        <li id="homeBtn">Home</li>
+
+<div class="question-container">
+
+    <div class="q-bubble q-right">
+        What CRM is best for a service business with a small sales team?
+    </div>
+
+    <div class="q-bubble q-left">
+        Compare HubSpot, Salesforce, Zoho, and Pipedrive for my needs.
+    </div>
+
+    <div class="q-bubble q-right">
+        Best CRM for SaaS companies.
+    </div>
+
+    <div class="q-bubble q-left">
+        What is the most affordable CRM with strong automation.
+    </div>
+
+    <div class="q-bubble q-right">
+        I need a CRM for outbound sales. Which one should I choose.
+    </div>
+
+    <div class="q-bubble q-left">
+        I need a CRM with strong automation and workflows. What is the best choice.
+    </div>
+
+    <div class="q-bubble q-right">
+        Which CRM offers the strongest marketing automation.
+    </div>
+
+</div>
+
         <li>History</li>
         <li>Settings</li>
       </ul>
