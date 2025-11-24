@@ -17,8 +17,12 @@ function formatResponse(text) {
   text = text.replace(/^## (.*)$/gm, "<h2>$1</h2>");
   text = text.replace(/^# (.*)$/gm, "<h1>$1</h1>");
 
-  text = text.replace(/^(.*CRM.*)$/gm, "<h2>$1</h2>");
-  text = text.replace(/^[A-Z][A-Za-z0-9 ,'-]{5,}$/gm, "<h2>$1</h2>");
+ // Headings rule 1 (lines containing CRM)
+text = text.replace(/^(.+CRM.+)$/gm, "<h2>$1</h2>");
+
+// Headings rule 2 (big lines starting with capital letter)
+text = text.replace(/^([A-Z][A-Za-z0-9 ,'-]{5,})$/gm, "<h2>$1</h2>");
+
 
   const keywords = [
     "CRM", "lead", "sales", "pipeline", "workflow",
@@ -42,7 +46,6 @@ function formatResponse(text) {
 function addMessage(box, content, sender) {
   const msg = document.createElement("div");
 
-  // ADD MARKDOWN STYLING CLASS HERE
   msg.classList.add("message", sender, "markdown-body");
 
   if (sender === "bot") {
@@ -150,80 +153,43 @@ function setActiveMenu(id) {
   document.getElementById(id).classList.add("active");
 }
 
-
 /* -----------------------------------------
            GO BACK TO FIRST UI (RESET)
 ------------------------------------------*/
 document.getElementById("homeBtn").addEventListener("click", () => {
-
-  // Reset both chat boxes
   chatBox.innerHTML = `<div class="message bot markdown-body">Hi there! How can I assist you today?</div>`;
   chatBox2.innerHTML = `<div class="message bot markdown-body">What is your CRM query?</div>`;
 
-  // Reset the first-message flag
   firstMessageSent = false;
 
-  // Switch UI
   secondUI.style.display = "none";
   firstUI.style.display = "flex";
 
-  // Remove transparency fade
   firstUI.classList.remove("hidden");
 
-  // Scroll to top (fresh start)
   chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-/* ---------------------------------------------------
-        QUICK QUESTIONS CLICK HANDLER
-----------------------------------------------------*/
-document.querySelectorAll(".quick-question").forEach(item => {
-  item.addEventListener("click", () => {
-
-    const q = item.innerText.trim();
-
-    // Add question bubble to chat
-    addMessage(chatBox2, q, "user");
-
-    // Send directly to backend
-    fetch("/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: q }),
-    })
-    .then(res => res.json())
-    .then(data => {
-      addMessage(chatBox2, data.response || "⚠️ No response.", "bot");
-    })
-    .catch(() => {
-      addMessage(chatBox2, "❌ Error connecting to server.", "bot");
-    });
-
+/* -----------------------------------------
+     FIXED BUBBLE CLICK HANDLER (NO DUPLICATE)
+------------------------------------------*/
+document.querySelectorAll(".q-bubble").forEach(bubble => {
+  bubble.addEventListener("click", () => {
+    const question = bubble.innerText.trim();
+    sendToChat(question);
   });
 });
 
+/* -----------------------------------------
+       FIXED FUNCTION — NO DUPLICATE
+------------------------------------------*/
+function sendToChat(text) {
+  // DO NOT add the user message manually
+  input2.value = text;
+  sendBtn2.click(); // this will add user message + send to bot
+}
 
-document.querySelectorAll(".quick-question").forEach(q => {
-  q.addEventListener("click", () => {
-
-    const text = q.innerText.trim();
-
-    // Add question bubble in UI
-    addMessage(chatBox2, text, "user");
-
-    // Send to backend
-    fetch("/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt: text })
-    })
-    .then(res => res.json())
-    .then(data => {
-      addMessage(chatBox2, data.response || "⚠️ No response", "bot");
-    })
-    .catch(() => {
-      addMessage(chatBox2, "❌ Error connecting to server.", "bot");
-    });
-
-  });
-});
+function sendToBot(prompt) {
+  input2.value = prompt;
+  sendBtn2.click();
+}
