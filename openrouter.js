@@ -58,7 +58,7 @@ Your response rules:
 - After giving an answer, always ask:
   “Would you like a more detailed explanation or is this enough?”
 - Always keep the tone friendly, like ChatGPT.
-
+- Answer the questions exactly according to the tokens given.
   `;
 
   // Add current user input to chat history
@@ -80,7 +80,7 @@ Your response rules:
       content: promptText,
     },
   ],
-  max_tokens: 250,
+  max_tokens: 1000,
   temperature: 0.4,
   });
 
