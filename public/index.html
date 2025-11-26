@@ -463,7 +463,47 @@ body {
 #chat-box h1, #chat-box h2, #chat-box h3 {
     margin: 10px 0 !important;
     font-weight: 600 !important;
-    font-size: 16px !important;   /* same size as message text */
+    font-size: 12px !important;   /* same size as message text */
+}
+/* ------------------------------
+   UNIFORM FONT SIZE FOR ALL TEXT
+------------------------------- */
+#chat-box2 .message,
+#chat-box .message,
+#chat-box2 .message * ,
+#chat-box .message * {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    font-weight: 400 !important;
+}
+
+/* Keep bold text slightly bold but same size */
+#chat-box2 .message strong,
+#chat-box .message strong,
+#chat-box2 .message b,
+#chat-box .message b {
+    font-weight: 600 !important;
+    font-size: 12px !important;
+}
+
+/* Ensure inline code or highlight remains same size */
+#chat-box2 .message code,
+#chat-box .message code {
+    font-size: 12px !important;
+}
+
+/* ------------------------------
+   CLEAN & CONSISTENT HEADINGS
+------------------------------- */
+#chat-box2 .message h1,
+#chat-box2 .message h2,
+#chat-box2 .message h3,
+#chat-box .message h1,
+#chat-box .message h2,
+#chat-box .message h3 {
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    margin: 10px 0 !important;
 }
 
 
