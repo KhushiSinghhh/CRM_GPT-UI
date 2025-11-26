@@ -434,6 +434,37 @@ body {
     color: #dcdcdc;
 }
 
+/* --------- FIX: Prevent AI message from getting cut --------- */
+#chat-box2 .message.bot,
+#chat-box .message.bot {
+    overflow: visible !important;
+    height: auto !important;
+    white-space: normal !important;
+    display: block;
+}
+
+/* Fix paragraph spacing so formatting looks clean */
+#chat-box2 .message p,
+#chat-box .message p {
+    margin: 6px 0 !important;
+    line-height: 1.45 !important;
+}
+
+/* Remove bolding/highlighting applied by Markdown */
+#chat-box2 strong,
+#chat-box strong,
+#chat-box2 b,
+#chat-box b {
+    font-weight: 500 !important;     /* normal weight */
+}
+
+/* Ensure headings look clean and not oversized */
+#chat-box2 h1, #chat-box2 h2, #chat-box2 h3,
+#chat-box h1, #chat-box h2, #chat-box h3 {
+    margin: 10px 0 !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;   /* same size as message text */
+}
 
 
 
