@@ -21,7 +21,11 @@ function formatResponse(text) {
 text = text.replace(/^(.+CRM.+)$/gm, "<h2>$1</h2>");
 
 // Headings rule 2 (big lines starting with capital letter)
-text = text.replace(/^([A-Z][A-Za-z0-9 ,'-]{5,})$/gm, "<h2>$1</h2>");
+text = text.replace(
+    /^([A-Z][A-Za-z0-9 ]{8,})$/gm,
+    "<h2>$1</h2>"
+);
+
 
 
   const keywords = [
