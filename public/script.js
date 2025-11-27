@@ -197,3 +197,7 @@ function sendToBot(prompt) {
   input2.value = prompt;
   sendBtn2.click();
 }
+
+function toggleSidebar() {
+  document.querySelector(".sidebar").classList.toggle("active");
+}

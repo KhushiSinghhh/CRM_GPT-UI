@@ -506,6 +506,52 @@ body {
     margin: 10px 0 !important;
 }
 
+/* ===========================
+   📱 MOBILE BURGER MENU
+   =========================== */
+
+.burger-btn {
+  display: none;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: white;
+  z-index: 1001;
+}
+
+/* Sidebar default hidden on mobile */
+@media (max-width: 900px) {
+  .burger-btn {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -260px;             /* hide sidebar */
+    top: 0;
+    width: 260px;
+    height: 100vh;
+    background: #243046;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding-top: 60px;
+  }
+
+  /* when active show sidebar */
+  .sidebar.active {
+    left: 0;
+  }
+
+  /* Chat panel full width */
+  .chat-panel {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+}
 
 
 </style>
@@ -580,6 +626,7 @@ body {
         <li>Settings</li>
       </ul>
     </div>
+    <button class="burger-btn" onclick="toggleSidebar()">☰</button>
 
     <div class="chat-panel">
       <div id="chat-box2">
