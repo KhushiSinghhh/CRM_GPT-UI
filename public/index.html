@@ -185,6 +185,62 @@ body {
   font-size: 20px;
 }
 
+/* Fix cut borders on mobile for first UI */
+@media (max-width: 600px) {
+  .main-container,
+  #first-ui {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fix top curved border clipping */
+  .header-section {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+
+  .welcome-card {
+    width: 80% !important;
+    max-width: 80% !important;
+    margin: 0 auto !important;
+  }
+}
+
+
+  /* Fix chat box showing cut / too small */
+  #chat-box {
+    height: 180px !important;   /* increased visible area */
+    padding: 10px !important;
+  }
+
+  /* Input row fixes */
+  .input-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  #promptInput {
+    font-size: 14px !important;
+    padding: 10px 14px !important;
+  }
+
+  #sendBtn {
+    width: 45px !important;
+    height: 45px !important;
+    font-size: 18px !important;
+  }
+
+  /* Spacing fixes so UI stays centered */
+  #first-ui {
+    padding: 20px 0 !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+
+
 /* ---------------- SECOND UI ---------------- */
 #second-ui {
   display: none;
@@ -552,6 +608,7 @@ body {
     margin-left: 0 !important;
   }
 }
+
 
 
 </style>
